@@ -1,0 +1,24 @@
+name: gitversion
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '.github/workflows/**'
+
+
+jobs:
+  getversion:
+    
+    name: Determine Version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Determine Version
+        uses: gittools/actions/gitversion/execute@v0.9.7
+        with:
+          useConfigFile: true
+          configFilePath: VersionConfig.yml
