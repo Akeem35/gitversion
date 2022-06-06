@@ -3,8 +3,6 @@ name: gitversion
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - '.github/workflows/**'
 
 
 jobs:
