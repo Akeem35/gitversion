@@ -6,10 +6,10 @@ mode: ContinuousDelivery
 increment: Inherit
 continuous-delivery-fallback-tag: ci
 tag-prefix: '[vV]'
-major-version-bump-message: '\+semver:\s?(breaking|major)'
-minor-version-bump-message: '\+semver:\s?(feature|minor)'
-patch-version-bump-message: '\+semver:\s?(fix|patch)'
-no-bump-message: '\+semver:\s?(none|skip)'
+major-version-bump-message: '(breaking|major)'
+minor-version-bump-message: '(feature|minor)'
+patch-version-bump-message: '(fix|hotfix|bugfix)'
+no-bump-message: '(none|skip|chore)'
 legacy-semver-padding: 4
 build-metadata-padding: 4
 commits-since-version-source-padding: 4
@@ -28,13 +28,13 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'release' ]
+    source-branches: [ 'galaxy', 'release' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: true
     pre-release-weight: 55000
   develop:
-    regex: ^dev(elop)?(ment)?$
+    regex: ^dev(elop)?(ment)?$|^galaxy$
     mode: ContinuousDeployment
     tag: alpha
     increment: Minor
@@ -46,7 +46,7 @@ branches:
     is-mainline: false
     pre-release-weight: 0
   release:
-    regex: ^releases?[/-]|^galaxy$
+    regex: ^release?[/-]
     mode: ContinuousDelivery
     tag: beta
     increment: None
@@ -58,7 +58,7 @@ branches:
     is-mainline: false
     pre-release-weight: 30000
   feature:
-    regex: ^features?[/-]
+    regex: ^feature?[/-]
     mode: ContinuousDelivery
     tag: useBranchName
     increment: Inherit
@@ -83,7 +83,7 @@ branches:
     is-mainline: false
     pre-release-weight: 30000
   hotfix:
-    regex: ^hotfix(es)?[/-]
+    regex: ^hotfix(es)?[/-]|^bugfix(es)?[/-]
     mode: ContinuousDelivery
     tag: beta
     increment: Patch
