@@ -1,14 +1,13 @@
-
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-informational-format: '{InformationalVersion}'
-mode: ContinuousDelivery
+mode: Mainline
 increment: Inherit
 continuous-delivery-fallback-tag: ci
 tag-prefix: '[vV]'
-major-version-bump-message: '(breaking|major)'
-minor-version-bump-message: '(feature|minor)'
-patch-version-bump-message: '(fix|hotfix|bugfix)'
+major-version-bump-message: '^(breaking|major)'
+minor-version-bump-message: '^(feature|minor)'
+patch-version-bump-message: '^(fix|hotfix|bugfix)'
 no-bump-message: '(none|skip|chore)'
 legacy-semver-padding: 4
 build-metadata-padding: 4
@@ -33,7 +32,7 @@ branches:
     is-mainline: true
     pre-release-weight: 55000
   develop:
-    regex: ^dev(elop)?(ment)?$|^galaxy$
+    regex: ^galaxy$|^dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: alpha
     increment: Minor
