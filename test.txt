@@ -8,3 +8,5 @@ major change
 commit on dev
 this is an example for feature commit
 this is an example for feature commit
+this is an example for feature commit
+this is an example for feature4 commit
