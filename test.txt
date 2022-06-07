@@ -6,3 +6,4 @@ dev commit
 feature commit
 major change
 commit on dev
+this is an example for feature commit
