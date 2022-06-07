@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main ]
 
-
 jobs:
   getversion:
     
@@ -25,3 +24,33 @@ jobs:
         with:
           useConfigFile: true
           configFilePath: VersionConfig.yml
+
+      - name: Display Version
+        run: |
+          echo "SemanticVersion: $GITVERSION_SEMVER"
+
+      - name: Get version path
+        id: branch
+        uses: ashley-taylor/regex-property-action@1.2
+        with:
+          value: ${{ env.GITVERSION_SEMVER }}
+          regex: "\\-[^\\-]*$"
+          flags: "" # Optional, defaults to "g"
+          replacement: ""
+
+      - name: show version path
+        run: echo "v${{ steps.branch.outputs.value }}"
+
+      - uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with: 
+          tag: 'v${{ steps.branch.outputs.value }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate new tag
+        id: gen_tag
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: 'v${{ steps.branch.outputs.value }}'
