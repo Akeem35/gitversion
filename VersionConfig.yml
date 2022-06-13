@@ -1,7 +1,7 @@
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-informational-format: '{InformationalVersion}'
-mode: Mainline
+mode: ContinuousDelivery
 increment: Inherit
 continuous-delivery-fallback-tag: ci
 tag-prefix: '[vV]'
@@ -26,12 +26,12 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'release' ]
+    source-branches: [ 'galaxy', 'release' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: true
     pre-release-weight: 55000
-  develop:
+  galaxy:
     regex: ^galaxy$|^dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: alpha
@@ -50,7 +50,7 @@ branches:
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support', 'release' ]
+    source-branches: [ 'galaxy', 'main', 'support', 'release' ]
     tracks-release-branches: false
     is-release-branch: true
     is-mainline: false
@@ -62,20 +62,7 @@ branches:
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: false
-    pre-release-weight: 30000
-  pull-request:
-    regex: ^(pull|pull\-requests|pr)[/-]
-    mode: ContinuousDelivery
-    tag: PullRequest
-    increment: Inherit
-    prevent-increment-of-merged-branch-version: false
-    tag-number-pattern: '[/-](?<number>\d+)[-/]'
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
+    source-branches: [ 'galaxy', 'main', 'release', 'feature', 'support', 'hotfix' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: false
@@ -87,7 +74,7 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support' ]
+    source-branches: [ 'galaxy', 'main', 'support' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: false
