@@ -2,7 +2,7 @@ name: gitversion
 
 on:
   pull_request:
-    types: [ closed ]
+    types: [ open ]
     branches:
      - 'release/**'
      - 'hotfix/**'
