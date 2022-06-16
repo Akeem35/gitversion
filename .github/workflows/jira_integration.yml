@@ -16,4 +16,4 @@ jobs:
         
       - name: Jira API
         run: |
-          curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/OKA-3 -u raulakeem35@gmail.com:fNzVQx2Feqx7HlkXNHHd01C5 --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "3.0.0"}}]}}'
+          curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/OKA-3 -u raulakeem35@gmail.com:yolgIwJckcWgkhEfkGsn652D --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "3.0.0"}}]}}'
