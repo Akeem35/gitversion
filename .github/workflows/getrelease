@@ -1,0 +1,15 @@
+PUT http://{PutYourDomainHere}:Port/jira/rest/api/2/version/{id}
+
+Body Example
+
+{
+"self": "http://{PutYourDomainHere}:Port/jira/rest/api/2/version/10000",
+"id": "10000",
+"description": "An excellent version",
+"name": "New Version 1",
+"archived": false,
+"released": true,
+"releaseDate": "2010-07-06",
+"userReleaseDate": "06/Jul/10",
+"projectId": 10000
+}
