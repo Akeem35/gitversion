@@ -1,0 +1,18 @@
+name: gitversion
+
+on:
+  push:
+    branches: [ galaxy ]
+
+jobs:
+  getversion:
+    
+    name: Determine Version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        
+      - name: Jira API
+        run: curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/OKA-3 --header 'Authorization: Basic fNzVQx2Feqx7HlkXNHHd01C5' --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "3.0.0"}}]}}'
