@@ -20,11 +20,12 @@ jobs:
       uses: tim-actions/get-pr-commits@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check Fixes
-      uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+    - uses: actions/setup-node@v3
       with:
-        commits: ${{ steps.get-pr-commits.outputs.commits }}
-        pattern: '(JIRA-[^\s]+)'
-        error: 'No "Fixes" found'
-        one_pass_all_pass: 'true'
+        node-version: 14
+    - run: declare –a array2=()
+    - run: node index.js
+    - run: echo $array2
+        
+
         
