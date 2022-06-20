@@ -20,6 +20,7 @@ jobs:
       uses: tim-actions/get-pr-commits@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        filter_out_pattern: '.*'
     - name: output commits
       run: |
         echo ${{ steps.get-pr-commits.outputs.commits }}
