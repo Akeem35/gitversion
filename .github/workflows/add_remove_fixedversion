@@ -1,0 +1,5 @@
+curl --request PUT \
+--url 'https://[redacted].atlassian.net/rest/api/2/issue/SCRUM-11' \
+--header 'Authorization: Basic [redacted]' \
+--header 'Content-Type: application/json; charset=utf-8' \
+--data '{"update": {"fixVersions": [{"remove": {"name": "Version 3.0"}},{"add":{"name": "Version 2.0"}}]}}'
