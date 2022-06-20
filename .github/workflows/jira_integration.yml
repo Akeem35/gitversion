@@ -5,9 +5,8 @@ on:
     branches: [ none ]
 
 jobs:
-  getversion:
-    
-    name: Determine Version
+  jirasteps:
+    name: Jira API integration
     runs-on: ubuntu-latest
 
     steps:
