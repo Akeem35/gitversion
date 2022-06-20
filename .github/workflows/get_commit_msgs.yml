@@ -19,4 +19,4 @@ jobs:
       run: |
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
         echo $PR_NUMBER
-        git fetch galaxy pull/$PR_NUMBER/head:testpr
+        git fetch origin pull/$PR_NUMBER/head:testpr
