@@ -20,4 +20,4 @@ jobs:
           
       - name: Jira API, Create a new release version
         run: |
-          curl -X PUT --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived": false,"name": "4.0.0","description": "An excellent version","projectId": 10000,"released": false }'
+          curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"4.0.0","description": "An excellent version","projectId": 10000 }'
