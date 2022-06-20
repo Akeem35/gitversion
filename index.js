@@ -11,4 +11,4 @@ commits.forEach(({ commit }) => {
 })
 
 console.log(results)
-process.env['array2'] = results
+process.env.array2 = results
