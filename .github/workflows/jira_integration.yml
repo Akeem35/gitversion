@@ -2,7 +2,7 @@ name: gitversion
 
 on:
   push:
-    branches: [ galaxy ]
+    branches: [ none ]
 
 jobs:
   getversion:
@@ -17,7 +17,9 @@ jobs:
 #       - name: Jira API, Add fixed version to issue
 #         run: |
 #           curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/OKA-3 -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "2.0.0"}}]}}'
-          
+      
+      # missing release date on json
       - name: Jira API, Create a new release version
         run: |
           curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"4.0.0","description": "An excellent version","projectId": 10000 }'
+          
