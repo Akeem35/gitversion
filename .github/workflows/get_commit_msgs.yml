@@ -14,20 +14,31 @@ jobs:
   release-notes:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Get PR Commits
-      id: 'get-pr-commits'
-      uses: tim-actions/get-pr-commits@master
+    - uses: actions/checkout@v1
+    - name: Parse Jira Keys from Commit
+      id: jira_keys
+      if: always()
+      uses: HighwayThree/jira-extract-issue-keys@master
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 14
-    - run: echo '${{ steps.get-pr-commits.outputs.commits }}' > example.json
-    - run: cat example.json
-    - run: str=$(jq tostring example.json)
-    - run: testo=$(node.exe index.js commits=$str)
-    - run: echo $testo
+        is-pull-request: ${{ github.event_name == 'pull_request' }}
+        parse-all-commits: ${{ github.event_name == 'push' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+#     - uses: actions/checkout@v2
+#     - name: Get PR Commits
+#       id: 'get-pr-commits'
+#       uses: tim-actions/get-pr-commits@master
+#       with:
+#         token: ${{ secrets.GITHUB_TOKEN }}
+#     - uses: actions/setup-node@v3
+#       with:
+#         node-version: 14
+#     - run: echo '${{ steps.get-pr-commits.outputs.commits }}' > example.json
+#     - run: cat example.json
+#     - run: str=$(jq tostring example.json)
+#     - run: testo=$(node.exe index.js commits=$str)
+#     - run: echo $testo
         
 
         
