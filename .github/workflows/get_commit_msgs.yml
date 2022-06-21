@@ -24,6 +24,7 @@ jobs:
         parse-all-commits: ${{ github.event_name == 'push' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: echo "${{ steps.jira_keys.outputs.jira-keys }}"
     
 #     - uses: actions/checkout@v2
 #     - name: Get PR Commits
