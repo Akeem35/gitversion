@@ -25,7 +25,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Loop Jira issues
-    - name: Jira API, Add fixed version to issue
       run: |
         variable="${{ steps.jira_keys.outputs.jira-keys }}"
         echo $variable
