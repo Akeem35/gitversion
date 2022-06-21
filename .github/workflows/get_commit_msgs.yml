@@ -24,7 +24,19 @@ jobs:
         parse-all-commits: ${{ github.event_name == 'push' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: echo "${{ steps.jira_keys.outputs.jira-keys }}"
+    - name: Loop Jira issues
+    - name: Jira API, Add fixed version to issue
+      run: |
+        variable="${{ steps.jira_keys.outputs.jira-keys }}"
+        echo $variable
+        for i in ${variable//,/ }
+        do
+          # call your procedure/other scripts here below
+          echo "$i"
+          curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/$i -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "2.0.0"}}]}}'
+        done
+        
+        
     
 #     - uses: actions/checkout@v2
 #     - name: Get PR Commits
