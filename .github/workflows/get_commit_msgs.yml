@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Define Version of release
+      run: echo "test"
     - name: Parse Jira Keys from Commit
       id: jira_keys
       if: always()
@@ -24,7 +26,11 @@ jobs:
         parse-all-commits: ${{ github.event_name == 'push' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Loop Jira issues
+    - name: Create Release Version
+      run: |
+        versionName="3.0.0"
+        curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"$versionName","description": "An excellent version","projectId": 10000 } | pcregrep -o1 '"id":"(\d*)"' 
+    - name: Set fixed version to Jira keys
       run: |
         variable="${{ steps.jira_keys.outputs.jira-keys }}"
         echo $variable
@@ -32,25 +38,11 @@ jobs:
         do
           # call your procedure/other scripts here below
           echo "$i"
-          curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/$i -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "2.0.0"}}]}}'
+          curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/$i -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "$versionName"}}]}}'
         done
         
         
-    
-#     - uses: actions/checkout@v2
-#     - name: Get PR Commits
-#       id: 'get-pr-commits'
-#       uses: tim-actions/get-pr-commits@master
-#       with:
-#         token: ${{ secrets.GITHUB_TOKEN }}
-#     - uses: actions/setup-node@v3
-#       with:
-#         node-version: 14
-#     - run: echo '${{ steps.get-pr-commits.outputs.commits }}' > example.json
-#     - run: cat example.json
-#     - run: str=$(jq tostring example.json)
-#     - run: testo=$(node.exe index.js commits=$str)
-#     - run: echo $testo
+  
         
 
         
