@@ -23,7 +23,7 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 14
-    - run: echo "${{ steps.get-pr-commits.outputs.commits }}" > example.json
+    - run: echo '${{ steps.get-pr-commits.outputs.commits }}' > example.json
     - run: cat example.json
     - run: str=$(jq tostring example.json)
     - run: testo=$(node.exe index.js commits=$str)
