@@ -1,6 +1,11 @@
 name: Commit Message Check
 
 on:
+  push:
+    branches: [ develop, test, main ]  
+    tags: [ 'v*.*.*' ]
+    paths-ignore:
+      - '.github/workflows/**'  
   pull_request:
     types: 
       - opened
@@ -11,37 +16,72 @@ on:
       - galaxy
       
 jobs:
-  release-notes:
+  jira_release:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/galaxy' && github.event_name == 'pull_request' 
+    
     steps:
-    - uses: actions/checkout@v1
-    - name: Define Version of release
-      run: echo "test"
-    - name: Parse Jira Keys from Commit
-      id: jira_keys
-      if: always()
-      uses: HighwayThree/jira-extract-issue-keys@master
-      with:
-        is-pull-request: ${{ github.event_name == 'pull_request' }}
-        parse-all-commits: ${{ github.event_name == 'push' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Create Release Version
-      run: |
-        versionName="3.0.0"
-        curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"$versionName","description": "An excellent version","projectId": 10000 }'  
-    - name: Set fixed version to Jira keys
-      run: |
-        variable="${{ steps.jira_keys.outputs.jira-keys }}"
-        echo $variable
-        for i in ${variable//,/ }
-        do
-          # call your procedure/other scripts here below
-          echo "$i"
-          curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/$i -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "$versionName"}}]}}'
-        done
+      - name: Checkout
+        uses: actions/checkout@v2
         
+      - name: Define Version of release
+        run: echo "test"
         
+      - name: Parse Jira Keys from Commit
+        id: jira_keys
+        if: always()
+        uses: HighwayThree/jira-extract-issue-keys@master
+        with:
+          is-pull-request: ${{ github.event_name == 'pull_request' }}
+          parse-all-commits: ${{ github.event_name == 'push' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create New Jira Release Version
+        run: |
+          versionName="3.0.0"
+          curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"$versionName","description": "An excellent version","projectId": 10000 }'  
+      
+      - name: Set fixed version to Jira keys
+        run: |
+          variable="${{ steps.jira_keys.outputs.jira-keys }}"
+          echo $variable
+          for i in ${variable//,/ }
+          do
+            # call your procedure/other scripts here below
+            echo "$i"
+            curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/$i -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "$versionName"}}]}}'
+          done
+        
+  github_release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' 
+     
+    steps:
+     - name: Checkout repository
+       uses: actions/checkout@v2
+
+     - name: Jira release version
+       run: |
+        # get versions and search for ID of release
+        versionID= $( curl -X POST --url https://{your-domain}.atlassian.net/rest/api/3/project/{projectIdOrKey}/versions -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json' | pcregrep -o1 '"id":\s"(\d*).*"name":.*"Next Version"' )
+        # Set version as released
+        curl -X POST --url https://{your-domain}.atlassian.net/rest/api/3/version/$versionID -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"released": true }'  
+
+     - name: Bump version and push tag
+       id: tag_version
+       uses: mathieudutour/github-tag-action@v5.5
+       with:
+          github_token: ${{ github.token }}
+          custom_tag: "2.0.0"
+
+     - name: Create a GitHub release
+       uses: softprops/action-gh-release@v1
+       with:
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+       env:
+          GITHUB_TOKEN: ${{ github.token }}  
   
         
 
