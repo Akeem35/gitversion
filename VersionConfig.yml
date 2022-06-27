@@ -1,4 +1,3 @@
-
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-informational-format: '{InformationalVersion}'
@@ -6,9 +5,9 @@ mode: ContinuousDelivery
 increment: Inherit
 continuous-delivery-fallback-tag: ci
 tag-prefix: '[vV]'
-major-version-bump-message: '(breaking|major)'
-minor-version-bump-message: '(feature|minor)'
-patch-version-bump-message: '(fix|hotfix|bugfix)'
+major-version-bump-message: '^(breaking|major)'
+minor-version-bump-message: '^(feature|minor)'
+patch-version-bump-message: '^(fix|hotfix|bugfix)'
 no-bump-message: '(none|skip|chore)'
 legacy-semver-padding: 4
 build-metadata-padding: 4
@@ -27,13 +26,13 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'release' ]
+    source-branches: [ 'galaxy', 'release' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: true
     pre-release-weight: 55000
-  develop:
-    regex: ^dev(elop)?(ment)?$|^galaxy$
+  galaxy:
+    regex: ^galaxy$|^dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: alpha
     increment: Minor
@@ -51,7 +50,7 @@ branches:
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support', 'release' ]
+    source-branches: [ 'galaxy', 'main', 'support', 'release' ]
     tracks-release-branches: false
     is-release-branch: true
     is-mainline: false
@@ -63,20 +62,7 @@ branches:
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: false
-    pre-release-weight: 30000
-  pull-request:
-    regex: ^(pull|pull\-requests|pr)[/-]
-    mode: ContinuousDelivery
-    tag: PullRequest
-    increment: Inherit
-    prevent-increment-of-merged-branch-version: false
-    tag-number-pattern: '[/-](?<number>\d+)[-/]'
-    track-merge-target: false
-    source-branches: [ 'develop', 'main', 'release', 'feature', 'support', 'hotfix' ]
+    source-branches: [ 'galaxy', 'main', 'release', 'feature', 'support', 'hotfix' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: false
@@ -88,7 +74,7 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-    source-branches: [ 'develop', 'main', 'support' ]
+    source-branches: [ 'galaxy', 'main', 'support' ]
     tracks-release-branches: false
     is-release-branch: false
     is-mainline: false

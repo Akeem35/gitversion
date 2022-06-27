@@ -2,3 +2,11 @@ this is a test
 this will change to major
 more changes that will potentially break the code
 one bugfix
+dev commit
+feature commit
+major change
+commit on dev
+this is an example for feature commit
+this is an example for feature commit
+this is an example for feature commit
+this is an example for feature4 commit
