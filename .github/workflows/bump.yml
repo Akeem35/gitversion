@@ -44,7 +44,7 @@ jobs:
       - name: Create New Jira Release Version
         run: |
           versionName="${{ steps.tag_version.outputs.new_tag }}"
-          curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"${versionName}","description": "An excellent version","projectId": 10000 }'  
+          curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"'${versionName}'","description": "An excellent version","projectId": 10000 }'  
       
       - name: Set fixed version to Jira keys
         run: |
