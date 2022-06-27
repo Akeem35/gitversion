@@ -22,6 +22,7 @@ jobs:
           dry_run: false
           release_branches: main,master
           pre_release_branches: release
+          append_to_pre_release_tag: beta
           
 
       - name: Create a GitHub release
