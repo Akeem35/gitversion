@@ -24,10 +24,35 @@ jobs:
           pre_release_branches: release
           append_to_pre_release_tag: beta
           
-
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
+          
+      - name: Parse Jira Keys from Commit
+        id: jira_keys
+        if: always()
+        uses: HighwayThree/jira-extract-issue-keys@master
+        with:
+          is-pull-request: ${{ github.event_name == 'pull_request' }}
+          parse-all-commits: ${{ github.event_name == 'push' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create New Jira Release Version
+        run: |
+          versionName="${{ steps.tag_version.outputs.new_tag }}"
+          curl -X POST --url https://okakoro.atlassian.net/rest/api/3/version -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"archived":false,"name":"$versionName","description": "An excellent version","projectId": 10000 }'  
+      
+      - name: Set fixed version to Jira keys
+        run: |
+          variable="${{ steps.jira_keys.outputs.jira-keys }}"
+          echo $variable
+          for i in ${variable//,/ }
+          do
+            # call your procedure/other scripts here below
+            echo "$i"
+            curl -X PUT --url https://okakoro.atlassian.net/rest/api/2/issue/$i -u raulakeem35@gmail.com:${{ secrets.JIRA_TOKEN }} --header 'Content-Type: application/json; charset=utf-8' -d '{"update":{ "fixVersions": [{"add": {"name": "$versionName"}}]}}'
+          done
