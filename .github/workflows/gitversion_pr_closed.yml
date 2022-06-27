@@ -2,7 +2,7 @@ name: gitversion
 
 on:
   push:
-    branches: [ main ]
+    branches: [ none ]
 
 jobs:
   getversion:
